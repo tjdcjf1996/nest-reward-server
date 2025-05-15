@@ -4,7 +4,7 @@ export const jwtConfig = {
   useFactory: (config: ConfigService) => ({
     secret: config.get<string>('JWT_SECRET_KEY'),
     signOptions: {
-      expiresIn: '10s',
+      expiresIn: '30m',
     },
   }),
   inject: [ConfigService],
