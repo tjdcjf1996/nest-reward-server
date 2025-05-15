@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { EventType } from '../types/event.type.js';
 
 export type EventDocument = Event & Document;
 
@@ -20,7 +21,7 @@ export class Event {
   // 이벤트 상태
   @Prop({
     required: true,
-    enum: ['active', 'inactive', 'closed'],
+    enum: EventType,
     default: 'inactive',
   })
   status: string;
