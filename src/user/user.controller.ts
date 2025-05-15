@@ -23,5 +23,17 @@ export class UserController {
     return await this.userService.login(loginDto.email, loginDto.password);
   }
 
+  @UseGuards(RolesGuard)
+  @Roles(Role.Admin)
+  @Patch('role')
+  async roleUpdate(
+    @UserInfo() user: User,
+    @Body() roleUpdateDto: RoleUpdateDto,
+  ) {
+    return await this.userService.updateRole(
+      user,
+      roleUpdateDto.targetEmail,
+      roleUpdateDto.targetRole,
+    );
   }
 }
