@@ -1,11 +1,13 @@
 import { UserInfo } from 'src/utils/userInfo.decorator';
 
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { Body, Controller, Patch, Post, UseGuards } from '@nestjs/common';
 import { LoginDto } from './dto/login.dto';
 import { UserService } from './user.service';
 import { User } from './schemas/user.schema.js';
 import { Role } from './types/userRole.type.js';
+import { RolesGuard } from 'src/auth/roles.guard';
+import { Roles } from 'src/utils/roles.decorator';
+import { RoleUpdateDto } from './dto/roleUpdate.dto.js';
 
 @Controller('user')
 export class UserController {
@@ -21,11 +23,5 @@ export class UserController {
     return await this.userService.login(loginDto.email, loginDto.password);
   }
 
-  @UseGuards(AuthGuard('jwt'))
-  @Get('role')
-  getEmail(@UserInfo() user: User) {
-    return { email: user.email, role: Role[user.role] };
   }
-
-  
 }
