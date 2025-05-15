@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from './schemas/user.schema';
 import { JwtService } from '@nestjs/jwt';
 import { compare, hash } from 'bcrypt';
 import { ConflictException, UnauthorizedException } from '@nestjs/common';
+import { Role } from './types/userRole.type.js';
 
 @Injectable()
 export class UserService {
@@ -45,6 +46,28 @@ export class UserService {
     return {
       access_token: this.jwtService.sign(payload),
     };
+  }
+
+  // 역할군 업데이트
+  async updateRole(user: User, email: string, role: string) {
+    if (!Object.values(Role).includes(role)) {
+      throw new BadRequestException('유효하지 않은 역할입니다.');
+    }
+
+    if (user.email === email) {
+      throw new BadRequestException('자기 자신에게 역할을 부여할 수 없습니다.');
+    }
+
+    const targetUser = await this.userModel.findOne({ email });
+    if (!user) {
+      throw new BadRequestException('요청하신 사용자를 찾을 수 없습니다.');
+    }
+
+    // 역할군 Enum으로 변환
+    targetUser.role = Role[role];
+    await targetUser.save();
+
+    return { email: targetUser.email, role: Role[targetUser.role] };
   }
 
   // 이메일로 사용자 찾기
