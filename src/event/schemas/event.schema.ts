@@ -33,6 +33,10 @@ export class Event {
   // 이벤트 방식
   @Prop({ type: Map, of: String })
   contents: Record<string, string>;
+
+  // 삭제 여부
+  @Prop({ default: null })
+  deletedAt?: Date;
 }
 
 export const EventSchema = SchemaFactory.createForClass(Event);

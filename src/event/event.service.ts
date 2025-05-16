@@ -1,4 +1,49 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Event, EventDocument } from './schemas/event.schema.js';
+import { Model } from 'mongoose';
+import { CreateEventDto } from './dto/createEvent.dto.js';
+import { UpdateEventDto } from './dto/updateEvent.dto.js';
 
 @Injectable()
-export class EventService {}
+export class EventService {
+  constructor(
+    @InjectModel(Event.name) private eventModel: Model<EventDocument>,
+  ) {}
+
+  async create(createEventDto: CreateEventDto) {
+    const event = new this.eventModel(createEventDto);
+    return await event.save();
+  }
+
+  async findAll(): Promise<Event[]> {
+    return await this.eventModel.find({ deletedAt: null }).exec();
+  }
+
+  async findAllIncDeleted(): Promise<Event[]> {
+    return this.eventModel.find().exec();
+  }
+
+  async findById(id: string): Promise<Event> {
+    const event = await this.eventModel
+      .findById({ _id: id, deleteAt: null })
+      .exec();
+    if (!event) throw new NotFoundException('Event not found');
+    return event;
+  }
+
+  async update(id: string, updateEventDto: UpdateEventDto): Promise<Event> {
+    const updated = await this.eventModel
+      .findByIdAndUpdate(id, updateEventDto, { new: true })
+      .exec();
+    if (!updated) throw new NotFoundException('Event not found');
+    return updated;
+  }
+
+  async delete(id: string): Promise<void> {
+    const result = await this.eventModel
+      .findByIdAndUpdate(id, { deletedAt: new Date() })
+      .exec();
+    if (!result) throw new NotFoundException('Event not found');
+  }
+}
