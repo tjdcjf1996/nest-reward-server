@@ -1,5 +1,5 @@
 export enum EventType {
-  active,
-  inactive,
-  closed,
+  active = 'active',
+  inactive = 'inactive',
+  closed = 'closed',
 }

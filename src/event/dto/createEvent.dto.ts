@@ -27,7 +27,7 @@ export class CreateEventDto {
 
   @IsEnum(EventType)
   @IsNotEmpty({ message: '이벤트 상태를 입력해주세요.' })
-  status: string;
+  status: EventType;
 
   @IsString()
   @IsNotEmpty({ message: '이벤트 타입을 입력해주세요.' })

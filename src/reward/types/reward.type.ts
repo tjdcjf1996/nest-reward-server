@@ -1,6 +1,6 @@
 export enum RewardType {
-  item,
-  coupon,
-  point,
-  cash,
+  item = 'item',
+  coupon = 'coupon',
+  point = 'point',
+  cash = 'cash',
 }

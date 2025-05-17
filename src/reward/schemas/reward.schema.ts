@@ -10,7 +10,7 @@ export class Reward {
   eventId: Types.ObjectId;
 
   @Prop({ required: true, enum: RewardType })
-  category: string;
+  category: RewardType;
 
   @Prop({ required: true })
   amount: number;

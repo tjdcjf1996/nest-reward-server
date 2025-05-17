@@ -1,9 +1,4 @@
-import {
-  IsBoolean,
-  IsEnum,
-  IsMongoId,
-  IsNumber,
-} from 'class-validator';
+import { IsBoolean, IsEnum, IsMongoId, IsNumber } from 'class-validator';
 import { RewardType } from '../types/reward.type.js';
 
 export class CreateRewardDto {
@@ -11,7 +6,7 @@ export class CreateRewardDto {
   eventId: string;
 
   @IsEnum(RewardType)
-  category: string;
+  category: RewardType;
 
   @IsNumber()
   amount: number;

@@ -24,7 +24,7 @@ export class Event {
     enum: EventType,
     default: 'inactive',
   })
-  status: string;
+  status: EventType;
 
   // 이벤트 타입
   @Prop({ required: true })
