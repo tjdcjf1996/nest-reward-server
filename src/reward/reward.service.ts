@@ -26,6 +26,12 @@ export class RewardService {
     return this.rewardModel.create(createRewardDto);
   }
 
+  async getNumberOfEvents(eventId: string): Promise<number> {
+    return await this.rewardModel
+      .countDocuments({ eventId, deletedAt: null })
+      .exec();
+  }
+
   async findAll(): Promise<Reward[]> {
     return this.rewardModel.find({ deletedAt: null });
   }
@@ -66,5 +72,13 @@ export class RewardService {
       },
     );
     if (!deleted) throw new NotFoundException('등록된 리워드 정보가 없습니다.');
+  }
+  async deleteAll(eventId: string): Promise<void> {
+    await this.rewardModel.updateMany(
+      { eventId, deletedAt: null },
+      {
+        deletedAt: new Date(),
+      },
+    );
   }
 }

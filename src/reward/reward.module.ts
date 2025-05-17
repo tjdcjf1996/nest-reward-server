@@ -10,6 +10,7 @@ import { EventModule } from 'src/event/event.module';
     MongooseModule.forFeature([{ name: Reward.name, schema: RewardSchema }]),
     EventModule,
   ],
+  exports: [RewardService],
   controllers: [RewardController],
   providers: [RewardService],
 })
