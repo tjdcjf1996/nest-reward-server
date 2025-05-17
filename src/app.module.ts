@@ -10,6 +10,7 @@ import { mongoURI } from './config/db/database.config';
 import { EventExecuteModule } from './event-execute/event-execute.module';
 import { RewardModule } from './reward/reward.module';
 import { EventRecordModule } from './event-record/event-record.module';
+import { RewardExecuteModule } from './reward-execute/reward-execute.module';
 
 const configModuleSetting = {
   validationSchema,
@@ -28,6 +29,7 @@ const configModuleSetting = {
     EventExecuteModule,
     RewardModule,
     EventRecordModule,
+    RewardExecuteModule,
   ],
   controllers: [AppController],
   providers: [AppService],
