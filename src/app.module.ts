@@ -22,6 +22,7 @@ const configModuleSetting = {
     MongooseModule.forRootAsync(mongoURI),
     // Event 모듈 추가
     EventModule,
+    RewardModule,
   ],
   controllers: [AppController],
   providers: [AppService],
