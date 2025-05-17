@@ -8,9 +8,9 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { EventService } from './event.service.js';
-import { CreateEventDto } from './dto/createEvent.dto.js';
-import { UpdateEventDto } from './dto/updateEvent.dto.js';
+import { EventService } from './event.service';
+import { CreateEventDto } from './dto/createEvent.dto';
+import { UpdateEventDto } from './dto/updateEvent.dto';
 import { ModuleRef } from '@nestjs/core';
 import { RewardService } from 'src/reward/reward.service';
 

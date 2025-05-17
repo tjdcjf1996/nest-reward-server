@@ -3,10 +3,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { EventModule } from './event/event.module';
 import { ConfigModule } from '@nestjs/config';
-import { validationSchema } from './config/env/validation.config.js';
-import databaseConfig from './config/env/database.config.js';
+import { validationSchema } from './config/env/validation.config';
+import databaseConfig from './config/env/database.config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { mongoURI } from './config/db/database.config.js';
+import { mongoURI } from './config/db/database.config';
+import { RewardModule } from './reward/reward.module';
 
 const configModuleSetting = {
   validationSchema,

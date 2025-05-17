@@ -6,7 +6,8 @@ import {
   IsOptional,
   IsNotEmpty,
 } from 'class-validator';
-import { EventType } from '../types/event.type.js';
+import { EventStatusType } from '../../types/eventStatus.type';
+import { EventType } from '../../types/event.type';
 
 export class CreateEventDto {
   @IsString()
@@ -25,13 +26,13 @@ export class CreateEventDto {
   @IsNotEmpty({ message: '종료 날짜를 입력해주세요.' })
   endAt: string;
 
-  @IsEnum(EventType)
+  @IsEnum(EventStatusType)
   @IsNotEmpty({ message: '이벤트 상태를 입력해주세요.' })
-  status: EventType;
+  status: EventStatusType;
 
-  @IsString()
+  @IsEnum(EventType)
   @IsNotEmpty({ message: '이벤트 타입을 입력해주세요.' })
-  type: string;
+  type: EventType;
 
   @IsOptional()
   @IsObject()

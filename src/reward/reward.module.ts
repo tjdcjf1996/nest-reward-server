@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { RewardController } from './reward.controller';
 import { RewardService } from './reward.service';
-import { Reward, RewardSchema } from './schemas/reward.schema.js';
+import { Reward, RewardSchema } from './schemas/reward.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 import { EventModule } from 'src/event/event.module';
 

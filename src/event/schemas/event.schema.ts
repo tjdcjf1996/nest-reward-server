@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { EventType } from '../types/event.type.js';
+import { EventStatusType } from '../../types/eventStatus.type';
+import { EventType } from '../../types/event.type';
 
 export type EventDocument = Event & Document;
 
@@ -21,14 +22,17 @@ export class Event {
   // 이벤트 상태
   @Prop({
     required: true,
-    enum: EventType,
+    enum: EventStatusType,
     default: 'inactive',
   })
-  status: EventType;
+  status: EventStatusType;
 
   // 이벤트 타입
-  @Prop({ required: true })
-  type: string;
+  @Prop({
+    required: true,
+    enum: EventType,
+  })
+  type: EventType;
 
   // 이벤트 방식
   @Prop({ type: Map, of: String })

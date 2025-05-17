@@ -7,9 +7,9 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { RewardService } from './reward.service.js';
-import { CreateRewardDto } from './dto/create-reward.dto.js';
-import { UpdateRewardDto } from './dto/update-reward.dto.js';
+import { RewardService } from './reward.service';
+import { CreateRewardDto } from './dto/create-reward.dto';
+import { UpdateRewardDto } from './dto/update-reward.dto';
 
 @Controller('reward')
 export class RewardController {

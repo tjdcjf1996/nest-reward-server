@@ -4,11 +4,11 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Reward, RewardDocument } from './schemas/reward.schema.js';
+import { Reward, RewardDocument } from './schemas/reward.schema';
 import { Model } from 'mongoose';
-import { UpdateRewardDto } from './dto/update-reward.dto.js';
+import { UpdateRewardDto } from './dto/update-reward.dto';
 import { EventService } from 'src/event/event.service';
-import { CreateRewardDto } from './dto/create-reward.dto.js';
+import { CreateRewardDto } from './dto/create-reward.dto';
 
 @Injectable()
 export class RewardService {
