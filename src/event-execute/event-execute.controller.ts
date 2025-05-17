@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { EventExecuteService } from './event-execute.service.js';
-import { EventExecuteDto } from './dto/event-execute.dto.js';
+import { EventExecuteDto } from './dto/eventExecute.dto.js';
 
 @Controller('event-execute')
 export class EventExecuteController {

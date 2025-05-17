@@ -1,5 +1,5 @@
-import { EventExecuteDto } from "src/event-execute/dto/event-execute.dto.js";
+import { EventExecuteDto } from '../../dto/eventExecute.dto';
 
 export interface EventTypeStrategy {
-  handle(eventExecuteDto:EventExecuteDto): Promise<boolean>;
+  handle(eventExecuteDto: EventExecuteDto): Promise<boolean>;
 }

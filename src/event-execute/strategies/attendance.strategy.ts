@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { EventStrategy } from './decorator/event.strategy.decorator';
 import { EventTypeStrategy } from './interface/event.strategy.interface';
-import { EventExecuteDto } from '../dto/event-execute.dto';
+import { EventExecuteDto } from '../dto/eventExecute.dto';
 
 @EventStrategy('attendance')
 @Injectable()

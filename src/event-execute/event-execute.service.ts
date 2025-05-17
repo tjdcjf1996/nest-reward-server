@@ -2,7 +2,7 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import { EventTypeStrategy } from './strategies/interface/event.strategy.interface';
 import { DiscoveryService, Reflector } from '@nestjs/core';
 import { EVENT_TYPE_METADATA } from './strategies/decorator/event.strategy.decorator';
-import { EventExecuteDto } from './dto/event-execute.dto';
+import { EventExecuteDto } from './dto/eventExecute.dto';
 import { EventService } from '../event/event.service';
 
 @Injectable()
