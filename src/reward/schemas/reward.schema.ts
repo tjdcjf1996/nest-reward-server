@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import { Document, Types, Schema as MongooseSchema } from 'mongoose';
 import { RewardType } from '../../types/reward.type';
 
 export type RewardDocument = Reward & Document;
@@ -10,7 +10,10 @@ export class Reward {
   eventId: Types.ObjectId;
 
   @Prop({ required: true, enum: RewardType })
-  category: RewardType;
+  rewardType: RewardType;
+
+  @Prop({ type: MongooseSchema.Types.Mixed, default: false })
+  rewardData: Record<string, any>;
 
   @Prop({ required: true })
   amount: number;
