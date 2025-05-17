@@ -1,4 +1,6 @@
-import { PartialType } from '@nestjs/mapped-types';
+import { OmitType, PartialType } from '@nestjs/mapped-types';
 import { CreateRewardDto } from './create-reward.dto.js';
 
-export class UpdateRewardDto extends PartialType(CreateRewardDto) {}
+export class UpdateRewardDto extends PartialType(
+  OmitType(CreateRewardDto, ['eventId'] as const),
+) {}
