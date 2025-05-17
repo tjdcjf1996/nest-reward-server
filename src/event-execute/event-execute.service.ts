@@ -20,7 +20,7 @@ export class EventExecuteService implements OnModuleInit {
     for (const wrapper of providers) {
       const instance = wrapper?.instance;
 
-      if (!instance) continue;
+      if (_.isNil(instance)) continue;
 
       const type = this.reflector.get<string>(
         EVENT_TYPE_METADATA,
@@ -47,9 +47,8 @@ export class EventExecuteService implements OnModuleInit {
 
     const strategy = this.strategyMap.get(type);
 
-    if (!strategy) {
-      // TODO: 해당 이벤트 타입에 대한 핸들러가 등록되어 있지 않은 경우 에러 반환
-      return false;
+    if (_.isNil(strategy)) {
+      return { message: '해당 이벤트에 대한 핸들러가 없습니다.' };
     }
 
     return await strategy.handle(eventExecuteDto);
