@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Schema as MongooseSchema } from 'mongoose';
 import { EventStatusType } from '../../types/eventStatus.type';
 import { EventType } from '../../types/event.type';
 
@@ -35,8 +35,8 @@ export class Event {
   type: EventType;
 
   // 이벤트 방식
-  @Prop({ type: Map, of: String })
-  contents: Record<string, string>;
+  @Prop({ type: MongooseSchema.Types.Mixed, default: false })
+  contents: Record<string, any>;
 
   // 삭제 여부
   @Prop({ default: null })

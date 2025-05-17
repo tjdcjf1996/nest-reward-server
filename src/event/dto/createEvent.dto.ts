@@ -36,5 +36,5 @@ export class CreateEventDto {
 
   @IsOptional()
   @IsObject()
-  contents?: Record<string, string>;
+  contents?: Record<string, any>;
 }
