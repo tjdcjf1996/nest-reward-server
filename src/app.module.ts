@@ -9,6 +9,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { mongoURI } from './config/db/database.config';
 import { EventExecuteModule } from './event-execute/event-execute.module';
 import { RewardModule } from './reward/reward.module';
+import { EventRecordModule } from './event-record/event-record.module';
 
 const configModuleSetting = {
   validationSchema,
@@ -26,6 +27,7 @@ const configModuleSetting = {
     EventModule,
     EventExecuteModule,
     RewardModule,
+    EventRecordModule,
   ],
   controllers: [AppController],
   providers: [AppService],
