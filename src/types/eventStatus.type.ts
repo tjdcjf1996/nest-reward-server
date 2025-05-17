@@ -1,4 +1,4 @@
-export enum EventType {
+export enum EventStatusType {
   active = 'active',
   inactive = 'inactive',
   closed = 'closed',
