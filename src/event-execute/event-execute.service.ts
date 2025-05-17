@@ -4,6 +4,7 @@ import { DiscoveryService, Reflector } from '@nestjs/core';
 import { EVENT_TYPE_METADATA } from './strategies/decorator/event.strategy.decorator';
 import { EventExecuteDto } from './dto/eventExecute.dto';
 import { EventService } from '../event/event.service';
+import * as _ from 'lodash';
 
 @Injectable()
 export class EventExecuteService implements OnModuleInit {
@@ -34,13 +35,19 @@ export class EventExecuteService implements OnModuleInit {
     }
   }
 
-  async execute(eventExecuteDto: EventExecuteDto): Promise<boolean> {
+  async execute(eventExecuteDto: EventExecuteDto): Promise<any> {
     const { eventId } = eventExecuteDto;
 
     const event = await this.eventService.findById(eventId);
-    if (!event) {
-      // TODO: 이벤트가 존재하지 않는 경우 에러 반환
-      return false;
+    // 해당 이벤트 없으면 이벤트 서비스 내에서 에러처리
+
+    const startAt = event.startAt;
+    const endAt = event.endAt;
+    const status = event.status;
+    const now = new Date();
+
+    if (startAt > now || endAt < now || status !== 'active') {
+      return { message: '이벤트 기간이 아닙니다.' };
     }
 
     const type = event.type;
@@ -52,5 +59,26 @@ export class EventExecuteService implements OnModuleInit {
     }
 
     return await strategy.handle(eventExecuteDto);
+  }
+
+  async validate(eventExecuteDto: EventExecuteDto): Promise<any> {
+    const { eventId } = eventExecuteDto;
+
+    const event = await this.eventService.findById(eventId);
+    // 해당 이벤트 없으면 이벤트 서비스 내에서 에러처리
+
+    const type = event.type;
+    let contents = {};
+    if (!_.isNil(event.contents)) {
+      contents = event.contents;
+    }
+
+    const strategy = this.strategyMap.get(type);
+
+    if (_.isNil(strategy)) {
+      return { message: '해당 이벤트에 대한 핸들러가 없습니다.' };
+    }
+
+    return await strategy.validate(eventExecuteDto, contents);
   }
 }
