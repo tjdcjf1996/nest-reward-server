@@ -7,8 +7,13 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Reward, RewardDocument } from './schemas/reward.schema';
 import { Model } from 'mongoose';
 import { UpdateRewardDto } from './dto/update-reward.dto';
-import { EventService } from 'src/event/event.service';
+import { EventService } from '../event/event.service';
 import { CreateRewardDto } from './dto/create-reward.dto';
+import { ItemRewardDto } from '../reward/dto/item-reward.dto';
+import { CouponRewardDto } from '../reward/dto/coupon-reward.dto';
+import { plainToInstance } from 'class-transformer';
+import { validateSync } from 'class-validator';
+import * as _ from 'lodash';
 
 @Injectable()
 export class RewardService {
@@ -19,10 +24,9 @@ export class RewardService {
 
   async create(createRewardDto: CreateRewardDto): Promise<Reward> {
     const event = await this.eventService.findById(createRewardDto.eventId);
-    if (!event || event.deletedAt) {
+    if (_.isNil(event) || event.deletedAt) {
       throw new BadRequestException('유효하지 않은 이벤트입니다');
     }
-
     return this.rewardModel.create(createRewardDto);
   }
 
@@ -60,7 +64,8 @@ export class RewardService {
         new: true,
       },
     );
-    if (!updated) throw new NotFoundException('등록된 리워드 정보가 없습니다.');
+    if (_.isNil(updated))
+      throw new NotFoundException('등록된 리워드 정보가 없습니다.');
     return updated;
   }
 
@@ -71,7 +76,8 @@ export class RewardService {
         deletedAt: new Date(),
       },
     );
-    if (!deleted) throw new NotFoundException('등록된 리워드 정보가 없습니다.');
+    if (_.isNil(deleted))
+      throw new NotFoundException('등록된 리워드 정보가 없습니다.');
   }
   async deleteAll(eventId: string): Promise<void> {
     await this.rewardModel.updateMany(
