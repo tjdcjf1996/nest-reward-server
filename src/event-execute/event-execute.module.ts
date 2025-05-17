@@ -8,6 +8,7 @@ import { EventRecordModule } from '../event-record/event-record.module';
 
 @Module({
   imports: [DiscoveryModule, EventModule, EventRecordModule],
+  exports: [EventExecuteService],
   providers: [EventExecuteService, AttendanceStrategy],
   controllers: [EventExecuteController],
 })
