@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { UserController } from './user.controller';
 import { User, UserSchema } from './schemas/user.schema.js';

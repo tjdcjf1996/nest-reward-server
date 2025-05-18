@@ -75,4 +75,28 @@ export class UserService {
   async findByEmail(email: string) {
     return await this.userModel.findOne({ email });
   }
+
+  // 관리자 수 조회
+  async countAdmin() {
+    return await this.userModel.countDocuments({ role: Role.Admin });
+  }
+
+  // 관리자 권한 부여
+  async initAdmin(user: User, role: Role) {
+    // 최초 서버 배포 시 관리자 한명만 부여 가능
+    const adminCount = await this.countAdmin();
+    if (adminCount > 0) {
+      throw new BadRequestException('관리자는 한명만 부여할 수 있습니다.');
+    }
+
+    const targetUser = await this.findByEmail(user.email);
+    if (_.isNil(targetUser)) {
+      throw new BadRequestException('요청하신 사용자를 찾을 수 없습니다.');
+    }
+
+    targetUser.role = role;
+    await targetUser.save();
+
+    return { message: '관리자 권한이 부여되었습니다.' };
+  }
 }

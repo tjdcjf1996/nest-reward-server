@@ -15,7 +15,10 @@ export class UserController {
 
   @Post('register')
   async register(@Body() loginDto: LoginDto) {
-    return await this.userService.register(loginDto.email, loginDto.password);
+    await this.userService.register(loginDto.email, loginDto.password);
+    return {
+      message: '회원가입이 완료되었습니다.',
+    };
   }
 
   @Post('login')
@@ -34,6 +37,15 @@ export class UserController {
       user,
       roleUpdateDto.targetEmail,
       roleUpdateDto.targetRole,
+    );
+  }
+
+  @UseGuards(RolesGuard)
+  @Patch('role/admin')
+  async roleUpdateAdmin(@UserInfo() user: User) {
+    return await this.userService.initAdmin(
+      user,
+      Role.Admin,
     );
   }
 }
