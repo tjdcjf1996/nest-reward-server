@@ -3,6 +3,7 @@ import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { HttpClientService } from '../utils/httpClient/http-client.service';
 import { ConfigService } from '@nestjs/config';
+import { EventExecuteDto } from '../event/dto/eventExecute.dto';
 
 @Injectable()
 export class EventService {
@@ -68,5 +69,16 @@ export class EventService {
       Authorization: token ?? '',
     };
     return this.http.delete(`${this.eventServerUrl}/event/${id}`, headers);
+  }
+
+  execute(eventExecuteDto: EventExecuteDto, token: string | undefined) {
+    const headers = {
+      Authorization: token ?? '',
+    };
+    return this.http.post(
+      `${this.eventServerUrl}/event-execute`,
+      eventExecuteDto,
+      headers,
+    );
   }
 }

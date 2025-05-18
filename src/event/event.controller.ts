@@ -12,6 +12,7 @@ import { EventService } from './event.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { Request } from 'express';
+import { EventExecuteDto } from '../event/dto/eventExecute.dto';
 
 @Controller('event')
 export class EventController {
@@ -61,5 +62,12 @@ export class EventController {
     const token = req.headers.authorization;
     // jwt 토큰이 없으면 실행되지 않기 때문에 undefined일 수 없음
     return await this.eventService.delete(id, token);
+  }
+
+  @Post('/execute')
+  async execute(@Body() eventExecuteDto: EventExecuteDto, @Req() req: Request) {
+    const token = req.headers.authorization;
+    // jwt 토큰이 없으면 실행되지 않기 때문에 undefined일 수 없음
+    return await this.eventService.execute(eventExecuteDto, token);
   }
 }
