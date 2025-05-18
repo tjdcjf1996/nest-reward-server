@@ -16,6 +16,14 @@ export class EventService {
     return await event.save();
   }
 
+  // 이벤트 ID로 리워드 자동지급 여부 확인
+  async isAutoExecute(eventId: string): Promise<boolean> {
+    const event = await this.findById(eventId);
+    if (!event) throw new NotFoundException('이벤트를 찾을 수 없습니다.');
+
+    return event.autoExecute;
+  }
+
   async findAll(): Promise<Event[]> {
     return await this.eventModel.find({ deletedAt: null }).exec();
   }
@@ -44,6 +52,6 @@ export class EventService {
     const result = await this.eventModel
       .findByIdAndUpdate(id, { deletedAt: new Date() })
       .exec();
-    if (!result) throw new NotFoundException('Event not found');
+    if (!result) throw new NotFoundException('이벤트를 찾을 수 없습니다.');
   }
 }
