@@ -55,6 +55,29 @@ export class HttpClientService {
     }
   }
 
+  async getRaw<T = any>(
+    url: string,
+    headers: Record<string, string> = {},
+  ): Promise<{ data: T; headers: any; status: number }> {
+    try {
+      const response = await firstValueFrom(
+        this.httpService.get<T>(url, {
+          headers: await this.addServerKeyToHeaders(headers),
+          responseType: 'arraybuffer',
+        }),
+      );
+
+      return {
+        data: response.data,
+        headers: response.headers,
+        status: response.status,
+      };
+    } catch (err: any) {
+      this.handleHttpError(err);
+      throw err;
+    }
+  }
+
   async post<T = any>(
     url: string,
     body: any,
