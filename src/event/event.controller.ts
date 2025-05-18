@@ -5,8 +5,8 @@ import {
   Get,
   OnModuleInit,
   Param,
+  Patch,
   Post,
-  Put,
 } from '@nestjs/common';
 import { EventService } from './event.service';
 import { CreateEventDto } from './dto/createEvent.dto';
@@ -49,7 +49,7 @@ export class EventController implements OnModuleInit {
     return this.eventService.findById(id);
   }
 
-  @Put(':id')
+  @Patch(':id')
   update(@Param('id') id: string, @Body() dto: UpdateEventDto) {
     return this.eventService.update(id, dto);
   }

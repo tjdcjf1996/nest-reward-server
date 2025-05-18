@@ -4,8 +4,8 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
-  Put,
 } from '@nestjs/common';
 import { RewardService } from './reward.service';
 import { CreateRewardDto } from './dto/create-reward.dto';
@@ -35,7 +35,7 @@ export class RewardController {
     return this.rewardService.findByEventId(eventId);
   }
 
-  @Put(':eventId')
+  @Patch(':eventId')
   async update(
     @Param('eventId') eventId: string,
     @Body() updateRewardDto: UpdateRewardDto,
