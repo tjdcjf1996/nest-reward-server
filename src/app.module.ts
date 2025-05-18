@@ -11,6 +11,7 @@ import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { ConfigModule } from '@nestjs/config';
 import { validationSchema } from './config/env/validation.config';
+import { HttpClientModule } from './utils/httpClient/http-client.module';
 
 const configModuleSetting = {
   validationSchema,
@@ -34,6 +35,7 @@ const throttlerModuleSetting = [
     EventModule,
     RewardModule,
     RewardRecordModule,
+    HttpClientModule,
   ],
   controllers: [AppController],
   providers: [
