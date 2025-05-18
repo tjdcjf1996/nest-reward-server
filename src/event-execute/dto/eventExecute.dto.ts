@@ -1,4 +1,4 @@
-import { IsEmail, IsMongoId, IsNotEmpty } from 'class-validator';
+import { IsEmail, IsMongoId, IsNotEmpty, IsOptional } from 'class-validator';
 
 /**
  * @description 이벤트 실행 DTO
@@ -8,8 +8,8 @@ import { IsEmail, IsMongoId, IsNotEmpty } from 'class-validator';
  */
 export class EventExecuteDto {
   @IsEmail()
-  @IsNotEmpty({ message: '이메일을 입력해주세요.' })
-  userEmail: string;
+  @IsOptional()
+  userEmail?: string;
 
   @IsMongoId()
   @IsNotEmpty({ message: '이벤트 아이디를 입력해주세요.' })

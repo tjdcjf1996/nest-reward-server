@@ -1,4 +1,4 @@
-import { IsEmail, IsMongoId, IsNotEmpty } from 'class-validator';
+import { IsEmail, IsMongoId, IsNotEmpty, IsOptional } from 'class-validator';
 
 /**
  * @description 보상 요청 DTO
@@ -7,7 +7,7 @@ import { IsEmail, IsMongoId, IsNotEmpty } from 'class-validator';
  */
 export class RewardExecuteDto {
   @IsEmail()
-  @IsNotEmpty({ message: '이메일을 입력해주세요.' })
+  @IsOptional()
   userEmail: string;
 
   @IsMongoId()
