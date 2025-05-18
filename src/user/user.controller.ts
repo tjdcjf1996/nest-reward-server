@@ -1,7 +1,10 @@
-import { Controller, Post, Body, Patch, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, Patch, UseGuards, Req } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { Public } from '../auth/public/public.decorator';
+import { LoginUserDto } from './dto/login-user.dto';
+import { UpdateRoleDto } from './dto/update-role.dto';
+import { Request } from 'express';
 
 @Controller('user')
 export class UserController {
@@ -10,25 +13,28 @@ export class UserController {
   @Public()
   @Post('register')
   create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+    return this.userService.register(createUserDto);
   }
 
   @Public()
   @Post('login')
-  login(@Body() createUserDto: CreateUserDto) {
-    return 'test';
-    //return this.userService.login(createUserDto);
+  login(@Body() loginUserDto: LoginUserDto) {
+    return this.userService.login(loginUserDto);
   }
 
   @Patch('role')
-  updateRole() {
-    //return this.userService.updateRole(updateUserDto);
-    return 'test';
+  updateRole(@Body() updateRoleDto: UpdateRoleDto, @Req() req: Request) {
+    const token = req.headers.authorization;
+    // jwt 토큰이 없으면 실행되지 않기 때문에 undefined일 수 없음
+
+    return this.userService.updateRole(updateRoleDto, token);
   }
 
   @Patch('/role/admin')
-  updateAdminRole() {
-    //return this.userService.updateAdminRole(updateUserDto);
-    return 'test';
+  updateAdminRole(@Req() req: Request) {
+    const token = req.headers.authorization;
+    // jwt 토큰이 없으면 실행되지 않기 때문에 undefined일 수 없음
+
+    return this.userService.updateAdminRole(token);
   }
 }

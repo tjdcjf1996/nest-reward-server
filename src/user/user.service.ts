@@ -1,25 +1,52 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
+import { HttpClientService } from '../utils/httpClient/http-client.service';
+import { ConfigService } from '@nestjs/config';
+import { LoginUserDto } from './dto/login-user.dto';
+import { UpdateRoleDto } from 'src/user/dto/update-role.dto.js';
 
 @Injectable()
 export class UserService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor(
+    private readonly http: HttpClientService,
+    private readonly configService: ConfigService,
+  ) {}
+
+  private get authServerUrl() {
+    return this.configService.get<string>('AUTH_SERVER');
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async register(createUserDto: CreateUserDto) {
+    return this.http.post(`${this.authServerUrl}/user/register`, createUserDto);
+  }
+  async login(loginUserDto: LoginUserDto) {
+    return this.http.post(`${this.authServerUrl}/user/login`, loginUserDto);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  // 권한 변경 메서드 ( 어드민 전용 )
+  async updateRole(updateRoleDto: UpdateRoleDto, token: string | undefined) {
+    const headers = {
+      Authorization: token ?? '',
+    };
+
+    return this.http.patch(
+      `${this.authServerUrl}/user/role`,
+      updateRoleDto,
+      headers,
+    );
   }
 
-  update(id: number) {
-    return `This action updates a #${id} user`;
-  }
+  // 어드민 권한 부여 메서드 ( 최초 서버 부팅 시 어드민 권한 부여, 아무도 없을 때만 가능 )
+  // 임시용 ( db 내 변경하는 방식 이용 시 삭제 요망 )
+  async updateAdminRole(token: string | undefined) {
+    const headers = {
+      Authorization: token ?? '',
+    };
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+    return this.http.patch(
+      `${this.authServerUrl}/user/role/admin`,
+      {},
+      headers,
+    );
   }
 }
