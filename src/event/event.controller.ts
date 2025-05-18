@@ -7,13 +7,18 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { EventService } from './event.service';
 import { CreateEventDto } from './dto/createEvent.dto';
 import { UpdateEventDto } from './dto/updateEvent.dto';
 import { ModuleRef } from '@nestjs/core';
 import { RewardService } from 'src/reward/reward.service';
+import { RolesGuard } from '../auth/roles.guard';
+import { Roles } from '../utils/decorator/roles.decorator';
+import { Role } from '../types/userRole.type';
 
+@UseGuards(RolesGuard)
 @Controller('event')
 export class EventController implements OnModuleInit {
   private rewardService: RewardService;
@@ -31,6 +36,7 @@ export class EventController implements OnModuleInit {
     }
   }
 
+  @Roles(Role.Admin, Role.Operator)
   @Post()
   create(@Body() dto: CreateEventDto) {
     return this.eventService.create(dto);
@@ -40,15 +46,19 @@ export class EventController implements OnModuleInit {
   findAll() {
     return this.eventService.findAll();
   }
+
+  @Roles(Role.Admin, Role.Operator)
   @Get('/all')
   findAllIncDeleted() {
     return this.eventService.findAllIncDeleted();
   }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.eventService.findById(id);
   }
 
+  @Roles(Role.Admin, Role.Operator)
   @Patch(':id')
   update(@Param('id') id: string, @Body() dto: UpdateEventDto) {
     return this.eventService.update(id, dto);
@@ -58,6 +68,7 @@ export class EventController implements OnModuleInit {
     이벤트를 삭제할 때 해당 이벤트에 속한 리워드도 함께 삭제
     리워드가 존재하는 경우에만 삭제 
   */
+  @Roles(Role.Admin, Role.Operator)
   @Delete(':id')
   async delete(@Param('id') id: string) {
     await this.eventService.delete(id);

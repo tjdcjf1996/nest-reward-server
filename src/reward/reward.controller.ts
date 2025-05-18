@@ -6,11 +6,17 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { RewardService } from './reward.service';
 import { CreateRewardDto } from './dto/create-reward.dto';
 import { UpdateRewardDto } from './dto/update-reward.dto';
+import { RolesGuard } from '../auth/roles.guard';
+import { Roles } from '../utils/decorator/roles.decorator';
+import { Role } from '../types/userRole.type';
 
+@UseGuards(RolesGuard)
+@Roles(Role.Admin, Role.Operator)
 @Controller('reward')
 export class RewardController {
   constructor(private readonly rewardService: RewardService) {}
@@ -45,6 +51,7 @@ export class RewardController {
 
   @Delete(':eventId')
   async delete(@Param('eventId') eventId: string) {
-    return this.rewardService.delete(eventId);
+    await this.rewardService.delete(eventId);
+    return { message: '리워드 삭제 완료' };
   }
 }

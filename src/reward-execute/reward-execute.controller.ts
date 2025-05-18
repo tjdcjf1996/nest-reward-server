@@ -1,8 +1,13 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { RewardExecuteService } from './reward-execute.service';
 import { RewardExecuteDto } from './dto/rewardExecute.dto';
+import { RolesGuard } from '../auth/roles.guard';
+import { Roles } from '../utils/decorator/roles.decorator';
+import { Role } from '../types/userRole.type';
+import { Payload } from '../auth/payload.class';
 import { UserInfo } from '../utils/decorator/userInfo.decorator';
 
+@UseGuards(RolesGuard)
 @Controller('reward-execute')
 export class RewardExecuteController {
   constructor(private readonly rewardExecuteService: RewardExecuteService) {}
@@ -18,6 +23,7 @@ export class RewardExecuteController {
     return this.rewardExecuteService.executeReward(rewardExecuteDto);
   }
 
+  @Roles(Role.Admin, Role.Operator)
   @Post('/pending')
   async executePendingReward(@Body() rewardExecuteDto: RewardExecuteDto) {
     return this.rewardExecuteService.executePendingReward(rewardExecuteDto);
