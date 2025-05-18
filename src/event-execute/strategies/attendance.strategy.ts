@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { EventStrategy } from './decorator/event.strategy.decorator';
 import { EventTypeStrategy } from './interface/event.strategy.interface';
 import { EventExecuteDto } from '../dto/eventExecute.dto';
@@ -14,6 +14,10 @@ export class AttendanceStrategy implements EventTypeStrategy {
   async handle(eventExecuteDto: EventExecuteDto): Promise<any> {
     // TODO: 출석체크 이벤트 핸들링 로직
     const { userEmail, eventId } = eventExecuteDto;
+
+    if (_.isNil(userEmail) || _.isNil(eventId)) {
+      return { message: '이벤트 실행에 필요한 정보가 없습니다.' };
+    }
 
     // 오늘 출석체크 여부 확인
     const now = new Date();
@@ -52,7 +56,11 @@ export class AttendanceStrategy implements EventTypeStrategy {
 
     // 몇일 참여 이벤트인지 contents에서 확인
     if (_.isNil(contents.days)) {
-      console.error(`[중요] EventID - ${eventId} : 이벤트 내용이 없습니다.`);
+      Logger.error(
+        `[중요] EventID - ${eventId} : 이벤트 내용이 없습니다.`,
+        'AttendanceStrategy',
+      );
+
       return false;
     }
 
