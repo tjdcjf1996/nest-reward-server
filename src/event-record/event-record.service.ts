@@ -24,12 +24,4 @@ export class EventRecordService {
   async countByCondition(condition: Record<string, any>) {
     return this.eventRecordModel.countDocuments(condition);
   }
-
-  findAll() {
-    return `This action returns all eventRecord`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} eventRecord`;
-  }
 }
