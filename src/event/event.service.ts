@@ -1,26 +1,72 @@
 import { Injectable } from '@nestjs/common';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
+import { HttpClientService } from '../utils/httpClient/http-client.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class EventService {
-  create(createEventDto: CreateEventDto) {
-    return 'This action adds a new event';
+  constructor(
+    private readonly http: HttpClientService,
+    private readonly configService: ConfigService,
+  ) {}
+
+  private get eventServerUrl() {
+    return this.configService.get<string>('EVENT_SERVER');
   }
 
-  findAll() {
-    return `This action returns all event`;
+  create(createEventDto: CreateEventDto, token: string | undefined) {
+    const headers = {
+      Authorization: token ?? '',
+    };
+
+    return this.http.post(
+      `${this.eventServerUrl}/event`,
+      createEventDto,
+      headers,
+    );
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} event`;
+  findAll(token: string | undefined) {
+    const headers = {
+      Authorization: token ?? '',
+    };
+    return this.http.get(`${this.eventServerUrl}/event`, headers);
   }
 
-  update(id: number, updateEventDto: UpdateEventDto) {
-    return `This action updates a #${id} event`;
+  findAllIncDeleted(token: string | undefined) {
+    const headers = {
+      Authorization: token ?? '',
+    };
+    return this.http.get(`${this.eventServerUrl}/event/all`, headers);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} event`;
+  findOne(id: string, token: string | undefined) {
+    const headers = {
+      Authorization: token ?? '',
+    };
+    return this.http.get(`${this.eventServerUrl}/event/${id}`, headers);
+  }
+
+  update(
+    id: string,
+    updateEventDto: UpdateEventDto,
+    token: string | undefined,
+  ) {
+    const headers = {
+      Authorization: token ?? '',
+    };
+    return this.http.patch(
+      `${this.eventServerUrl}/event/${id}`,
+      updateEventDto,
+      headers,
+    );
+  }
+
+  delete(id: string, token: string | undefined) {
+    const headers = {
+      Authorization: token ?? '',
+    };
+    return this.http.delete(`${this.eventServerUrl}/event/${id}`, headers);
   }
 }

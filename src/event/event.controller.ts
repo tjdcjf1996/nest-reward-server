@@ -1,34 +1,65 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Req,
+} from '@nestjs/common';
 import { EventService } from './event.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
+import { Request } from 'express';
 
 @Controller('event')
 export class EventController {
   constructor(private readonly eventService: EventService) {}
 
   @Post()
-  create(@Body() createEventDto: CreateEventDto) {
-    return this.eventService.create(createEventDto);
+  create(@Body() createEventDto: CreateEventDto, @Req() req: Request) {
+    const token = req.headers.authorization;
+    // jwt 토큰이 없으면 실행되지 않기 때문에 undefined일 수 없음
+    return this.eventService.create(createEventDto, token);
   }
 
   @Get()
-  findAll() {
-    return this.eventService.findAll();
+  findAll(@Req() req: Request) {
+    const token = req.headers.authorization;
+    // jwt 토큰이 없으면 실행되지 않기 때문에 undefined일 수 없음
+    return this.eventService.findAll(token);
+  }
+
+  @Get('/all')
+  findAllIncDeleted(@Req() req: Request) {
+    const token = req.headers.authorization;
+    // jwt 토큰이 없으면 실행되지 않기 때문에 undefined일 수 없음
+    return this.eventService.findAllIncDeleted(token);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.eventService.findOne(+id);
+  findOne(@Param('id') id: string, @Req() req: Request) {
+    const token = req.headers.authorization;
+    // jwt 토큰이 없으면 실행되지 않기 때문에 undefined일 수 없음
+    return this.eventService.findOne(id, token);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateEventDto: UpdateEventDto) {
-    return this.eventService.update(+id, updateEventDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateEventDto: UpdateEventDto,
+    @Req() req: Request,
+  ) {
+    const token = req.headers.authorization;
+    // jwt 토큰이 없으면 실행되지 않기 때문에 undefined일 수 없음
+    return this.eventService.update(id, updateEventDto, token);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.eventService.remove(+id);
+  async delete(@Param('id') id: string, @Req() req: Request) {
+    const token = req.headers.authorization;
+    // jwt 토큰이 없으면 실행되지 않기 때문에 undefined일 수 없음
+    return await this.eventService.delete(id, token);
   }
 }
