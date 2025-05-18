@@ -10,4 +10,9 @@ export class RewardExecuteController {
   async executeReward(@Body() rewardExecuteDto: RewardExecuteDto) {
     return this.rewardExecuteService.executeReward(rewardExecuteDto);
   }
+
+  @Post('/pending')
+  async executePendingReward(@Body() rewardExecuteDto: RewardExecuteDto) {
+    return this.rewardExecuteService.executePendingReward(rewardExecuteDto);
+  }
 }
