@@ -28,7 +28,7 @@ export class EventService {
     const event = await this.eventModel
       .findById({ _id: id, deleteAt: null })
       .exec();
-    if (!event) throw new NotFoundException('Event not found');
+    if (!event) throw new NotFoundException('이벤트를 찾을 수 없습니다.');
     return event;
   }
 
@@ -36,7 +36,7 @@ export class EventService {
     const updated = await this.eventModel
       .findByIdAndUpdate(id, updateEventDto, { new: true })
       .exec();
-    if (!updated) throw new NotFoundException('Event not found');
+    if (!updated) throw new NotFoundException('이벤트를 찾을 수 없습니다.');
     return updated;
   }
 

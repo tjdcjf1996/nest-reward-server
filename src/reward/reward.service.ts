@@ -9,10 +9,6 @@ import { Model } from 'mongoose';
 import { UpdateRewardDto } from './dto/update-reward.dto';
 import { EventService } from '../event/event.service';
 import { CreateRewardDto } from './dto/create-reward.dto';
-import { ItemRewardDto } from '../reward/dto/item-reward.dto';
-import { CouponRewardDto } from '../reward/dto/coupon-reward.dto';
-import { plainToInstance } from 'class-transformer';
-import { validateSync } from 'class-validator';
 import * as _ from 'lodash';
 
 @Injectable()
@@ -30,7 +26,8 @@ export class RewardService {
     return this.rewardModel.create(createRewardDto);
   }
 
-  async getNumberOfEvents(eventId: string): Promise<number> {
+  // 이벤트 ID에 해당한 리워드 개수 조회
+  async getNumberOfRewards(eventId: string): Promise<number> {
     return await this.rewardModel
       .countDocuments({ eventId, deletedAt: null })
       .exec();

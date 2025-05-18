@@ -48,7 +48,6 @@ export class AttendanceStrategy implements EventTypeStrategy {
     eventExecuteDto: EventExecuteDto,
     contents: Record<string, any>,
   ): Promise<boolean> {
-    // TODO: 출석체크 이벤트 유효성 검사 로직
     const { userEmail, eventId } = eventExecuteDto;
 
     // 몇일 참여 이벤트인지 contents에서 확인

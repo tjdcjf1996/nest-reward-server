@@ -15,6 +15,10 @@ export class EventExecuteService implements OnModuleInit {
     private readonly reflector: Reflector,
   ) {}
 
+  /*
+   DI로 주입된 provider들을 순회하며 decorator에 설정된 type을 key로 provider instance를 value로 하는 map을 생성
+   provider instance는 EventTypeStrategy interface를 구현해야 함
+  */
   onModuleInit() {
     const providers = this.discoveryService.getProviders();
 

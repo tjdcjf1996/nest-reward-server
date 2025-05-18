@@ -3,6 +3,12 @@ import { Document, Schema as MongooseSchema, Types } from 'mongoose';
 
 export type EventRecordDocument = EventRecord & Document;
 
+/**
+ * @description EventRecord 스키마
+ * @property {string} userEmail - 사용자 이메일
+ * @property {Types.ObjectId} eventId - 이벤트 아이디
+ * @property {Record<string, any>} eventData - 이벤트 데이터
+ */
 @Schema({ collection: 'event-records', timestamps: true })
 export class EventRecord {
   @Prop({ required: true })

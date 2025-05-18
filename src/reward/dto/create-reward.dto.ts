@@ -10,6 +10,13 @@ import { RewardType } from '../../types/reward.type';
 import { CouponRewardDto } from './coupon-reward.dto';
 import { IsRewardDataConstraint } from './validator/reward-data.validator';
 
+/**
+ * @description 리워드 생성 DTO
+ * @property {string} eventId - 이벤트 ID
+ * @property {RewardType} rewardType - 리워드 타입 (item, coupon, point, cash)
+ * @property {number} amount - 리워드 수량
+ * @property {CouponRewardDto} rewardData - 리워드 데이터 (optional)
+ */
 export class CreateRewardDto {
   @IsMongoId()
   eventId: string;
@@ -21,9 +28,6 @@ export class CreateRewardDto {
 
   @IsNumber()
   amount: number;
-
-  @IsBoolean()
-  autoExecute: boolean;
 
   @IsOptional()
   @Validate(IsRewardDataConstraint)

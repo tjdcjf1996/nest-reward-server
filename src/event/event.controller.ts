@@ -22,11 +22,12 @@ export class EventController implements OnModuleInit {
     private moduleRef: ModuleRef,
   ) {}
 
+  // 순환 참조 방지를 위해 ModuleRef를 사용하여 RewardService 불러옴
   onModuleInit() {
     this.rewardService = this.moduleRef.get(RewardService, { strict: false });
 
     if (!this.rewardService) {
-      throw new Error('RewardService not found');
+      throw new Error('리워드 서비스를 찾을 수 없습니다.');
     }
   }
 
@@ -53,13 +54,15 @@ export class EventController implements OnModuleInit {
     return this.eventService.update(id, dto);
   }
 
+  /* 
+    이벤트를 삭제할 때 해당 이벤트에 속한 리워드도 함께 삭제
+    리워드가 존재하는 경우에만 삭제 
+  */
   @Delete(':id')
   async delete(@Param('id') id: string) {
-    // 이벤트 삭제
     await this.eventService.delete(id);
 
-    // 해당 이벤트에 속한 리워드 확인
-    const rewards = await this.rewardService.getNumberOfEvents(id);
+    const rewards = await this.rewardService.getNumberOfRewards(id);
     if (rewards > 0) {
       await this.rewardService.deleteAll(id);
     }
