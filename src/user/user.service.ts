@@ -50,7 +50,7 @@ export class UserService {
   }
 
   // 역할군 업데이트
-  async updateRole(user: User, email: string, role: string) {
+  async updateRole(user: User, email: string, role: Role) {
     if (!Object.values(Role).includes(role)) {
       throw new BadRequestException('유효하지 않은 역할입니다.');
     }
@@ -65,10 +65,10 @@ export class UserService {
     }
 
     // 역할군 Enum으로 변환
-    targetUser.role = Role[role];
+    targetUser.role = role;
     await targetUser.save();
 
-    return { email: targetUser.email, role: Role[targetUser.role] };
+    return { email: targetUser.email, role: targetUser.role };
   }
 
   // 이메일로 사용자 찾기
