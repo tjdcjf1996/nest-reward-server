@@ -6,6 +6,7 @@ import { JwtService } from '@nestjs/jwt';
 import { compare, hash } from 'bcrypt';
 import { ConflictException, UnauthorizedException } from '@nestjs/common';
 import { Role } from './types/userRole.type.js';
+import * as _ from 'lodash';
 
 @Injectable()
 export class UserService {
@@ -59,7 +60,7 @@ export class UserService {
     }
 
     const targetUser = await this.userModel.findOne({ email });
-    if (!user) {
+    if (_.isNil(targetUser)) {
       throw new BadRequestException('요청하신 사용자를 찾을 수 없습니다.');
     }
 
