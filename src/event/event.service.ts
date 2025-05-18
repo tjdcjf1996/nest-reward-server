@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Event, EventDocument } from './schemas/event.schema';
 import { Model } from 'mongoose';
@@ -50,8 +54,16 @@ export class EventService {
 
   async delete(id: string): Promise<void> {
     const result = await this.eventModel
-      .findByIdAndUpdate(id, { deletedAt: new Date() })
+      .findOneAndUpdate(
+        { _id: id, deletedAt: null },
+        { deletedAt: new Date() },
+        { new: true },
+      )
       .exec();
-    if (!result) throw new NotFoundException('이벤트를 찾을 수 없습니다.');
+
+    if (!result)
+      throw new BadRequestException(
+        '이미 삭제되었거나 존재하지 않는 이벤트입니다.',
+      );
   }
 }
