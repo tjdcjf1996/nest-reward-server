@@ -4,7 +4,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { Public } from '../auth/public/public.decorator';
 import { LoginUserDto } from './dto/login-user.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
-import { Request } from 'express';
+import { AuthToken } from '../utils/decorator/auth-token.decorator';
 
 @Controller('user')
 export class UserController {
@@ -23,18 +23,12 @@ export class UserController {
   }
 
   @Patch('role')
-  updateRole(@Body() updateRoleDto: UpdateRoleDto, @Req() req: Request) {
-    const token = req.headers.authorization;
-    // jwt 토큰이 없으면 실행되지 않기 때문에 undefined일 수 없음
-
+  updateRole(@Body() updateRoleDto: UpdateRoleDto, @AuthToken() token: string) {
     return this.userService.updateRole(updateRoleDto, token);
   }
 
   @Patch('/role/admin')
-  updateAdminRole(@Req() req: Request) {
-    const token = req.headers.authorization;
-    // jwt 토큰이 없으면 실행되지 않기 때문에 undefined일 수 없음
-
+  updateAdminRole(@AuthToken() token: string) {
     return this.userService.updateAdminRole(token);
   }
 }
