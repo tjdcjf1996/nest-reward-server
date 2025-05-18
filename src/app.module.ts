@@ -11,6 +11,7 @@ import { EventExecuteModule } from './event-execute/event-execute.module';
 import { RewardModule } from './reward/reward.module';
 import { EventRecordModule } from './event-record/event-record.module';
 import { RewardExecuteModule } from './reward-execute/reward-execute.module';
+import { RewardRecordModule } from './reward-record/reward-record.module';
 
 const configModuleSetting = {
   validationSchema,
@@ -24,12 +25,13 @@ const configModuleSetting = {
     ConfigModule.forRoot(configModuleSetting),
     // MongoDB 모듈 추가
     MongooseModule.forRootAsync(mongoURI),
-    // Event 모듈 추가
+    // 각 모듈 추가
     EventModule,
     EventExecuteModule,
     RewardModule,
     EventRecordModule,
     RewardExecuteModule,
+    RewardRecordModule,
   ],
   controllers: [AppController],
   providers: [AppService],
