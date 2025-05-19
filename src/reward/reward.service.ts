@@ -3,6 +3,7 @@ import { CreateRewardDto } from './dto/create-reward.dto';
 import { UpdateRewardDto } from './dto/update-reward.dto';
 import { HttpClientService } from '../utils/httpClient/http-client.service';
 import { ConfigService } from '@nestjs/config';
+import { tokenToHeaders } from '../utils/util/token-to-headers.util';
 
 @Injectable()
 export class RewardService {
@@ -16,35 +17,32 @@ export class RewardService {
   }
 
   async create(createRewardDto: CreateRewardDto, token: string | undefined) {
-    const headers = {
-      Authorization: token ?? '',
-    };
     return this.http.post(
       `${this.eventServerUrl}/reward`,
       createRewardDto,
-      headers,
+      tokenToHeaders(token),
     );
   }
 
   async findAll(token: string | undefined) {
-    const headers = {
-      Authorization: token ?? '',
-    };
-    return this.http.get(`${this.eventServerUrl}/reward`, headers);
+    return this.http.get(
+      `${this.eventServerUrl}/reward`,
+      tokenToHeaders(token),
+    );
   }
 
   async findAllIncDeleted(token: string | undefined) {
-    const headers = {
-      Authorization: token ?? '',
-    };
-    return this.http.get(`${this.eventServerUrl}/reward/all`, headers);
+    return this.http.get(
+      `${this.eventServerUrl}/reward/all`,
+      tokenToHeaders(token),
+    );
   }
 
   async findByEventId(eventId: string, token: string | undefined) {
-    const headers = {
-      Authorization: token ?? '',
-    };
-    return this.http.get(`${this.eventServerUrl}/reward/${eventId}`, headers);
+    return this.http.get(
+      `${this.eventServerUrl}/reward/${eventId}`,
+      tokenToHeaders(token),
+    );
   }
 
   async update(
@@ -52,23 +50,17 @@ export class RewardService {
     updateRewardDto: UpdateRewardDto,
     token: string | undefined,
   ) {
-    const headers = {
-      Authorization: token ?? '',
-    };
     return this.http.patch(
       `${this.eventServerUrl}/reward/${eventId}`,
       updateRewardDto,
-      headers,
+      tokenToHeaders(token),
     );
   }
 
   async delete(eventId: string, token: string | undefined) {
-    const headers = {
-      Authorization: token ?? '',
-    };
     return this.http.delete(
       `${this.eventServerUrl}/reward/${eventId}`,
-      headers,
+      tokenToHeaders(token),
     );
   }
 }
