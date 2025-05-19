@@ -1,6 +1,13 @@
 import { UserInfo } from 'src/utils/userInfo.decorator';
 
-import { Body, Controller, Patch, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { LoginDto } from './dto/login.dto';
 import { UserService } from './user.service';
 import { User } from './schemas/user.schema.js';
@@ -27,6 +34,13 @@ export class UserController {
   }
 
   @UseGuards(RolesGuard)
+  @Roles(Role.User)
+  @Delete()
+  async deleteUser(@UserInfo() user: User) {
+    return await this.userService.deleteUser(user);
+  }
+
+  @UseGuards(RolesGuard)
   @Roles(Role.Admin)
   @Patch('role')
   async roleUpdate(
@@ -43,9 +57,6 @@ export class UserController {
   @UseGuards(RolesGuard)
   @Patch('role/admin')
   async roleUpdateAdmin(@UserInfo() user: User) {
-    return await this.userService.initAdmin(
-      user,
-      Role.Admin,
-    );
+    return await this.userService.initAdmin(user, Role.Admin);
   }
 }
