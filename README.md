@@ -85,7 +85,7 @@ JWT_SECRET_KEY=jwt_secret_key_input
 | 이벤트 상세조회      | GET    | /event/:id         | ✅         |
 | 이벤트 수정         | PATCH  | /event/:id         | ✅         |
 | 이벤트 삭제         | DELETE | /event/:id         | ✅         |
-| 이벤트 참여         | POST   | /event/execute     | ✅         |
+| 이벤트 참여         | POST   | /event-execute     | ✅         |
 
 ---
 
@@ -99,8 +99,8 @@ JWT_SECRET_KEY=jwt_secret_key_input
 | 보상 상세조회        | GET    | /reward/:id              | ✅         |
 | 보상 수정           | PATCH  | /reward/:id              | ✅         |
 | 보상 삭제           | DELETE | /reward/:id              | ✅         |
-| 보상 지급 요청       | POST   | /reward/execute          | ✅         |
-| 수동 보상 지급 (어드민) | POST   | /reward/execute/pending  | ✅         |
+| 보상 지급 요청       | POST   | /reward-execute          | ✅         |
+| 수동 보상 지급 (어드민) | POST   | /reward-execute/pending  | ✅         |
 
 ---
 
