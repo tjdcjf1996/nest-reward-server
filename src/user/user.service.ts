@@ -24,6 +24,13 @@ export class UserService {
     return this.http.post(`${this.authServerUrl}/user/login`, loginUserDto);
   }
 
+  async delete(token: string | undefined) {
+    return this.http.delete(
+      `${this.authServerUrl}/user`,
+      tokenToHeaders(token),
+    );
+  }
+
   // 권한 변경 메서드 ( 어드민 전용 )
   async updateRole(updateRoleDto: UpdateRoleDto, token: string | undefined) {
     return this.http.patch(
