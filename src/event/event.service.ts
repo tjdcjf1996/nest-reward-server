@@ -38,7 +38,7 @@ export class EventService {
 
   async findById(id: string): Promise<Event> {
     const event = await this.eventModel
-      .findById({ _id: id, deleteAt: null })
+      .findById({ _id: id, deletedAt: null })
       .exec();
     if (!event) throw new NotFoundException('이벤트를 찾을 수 없습니다.');
     return event;
