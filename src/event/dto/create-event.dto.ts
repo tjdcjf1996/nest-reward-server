@@ -8,7 +8,6 @@ import {
   IsBoolean,
 } from 'class-validator';
 import { EventStatusType } from '../../types/eventStatus.type';
-import { EventType } from '../../types/event.type';
 
 /**
  * @description 이벤트 생성 DTO
@@ -43,9 +42,9 @@ export class CreateEventDto {
   @IsNotEmpty({ message: '이벤트 상태를 입력해주세요.' })
   status: EventStatusType;
 
-  @IsEnum(EventType)
+  @IsString()
   @IsNotEmpty({ message: '이벤트 타입을 입력해주세요.' })
-  type: EventType;
+  type: string;
 
   @IsOptional()
   @IsObject()

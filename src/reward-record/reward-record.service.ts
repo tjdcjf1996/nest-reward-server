@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { HttpClientService } from '../utils/httpClient/http-client.service';
+import { tokenToHeaders } from '../utils/util/token-to-headers.util';
 
 @Injectable()
 export class RewardRecordService {
@@ -14,55 +15,37 @@ export class RewardRecordService {
   }
 
   async findByUserEmail(token: string | undefined) {
-    const headers = {
-      Authorization: token ?? '',
-    };
-
-    return await this.http.get(`${this.eventServerUrl}/reward-record`, headers);
+    return await this.http.get(
+      `${this.eventServerUrl}/reward-record`,
+      tokenToHeaders(token),
+    );
   }
 
   async findAllUserRewardRecord(role: string, token: string | undefined) {
-    const headers = {
-      Authorization: token ?? '',
-    };
-
     return await this.http.get(
       `${this.eventServerUrl}/reward-record/all/${role}`,
-      headers,
+      tokenToHeaders(token),
     );
   }
 
   async downloadAllUserRewardRecord(role: string, token: string | undefined) {
-    const headers = {
-      Authorization: token ?? '',
-      responseType: 'arraybuffer',
-    };
-
     return await this.http.getRaw(
       `${this.eventServerUrl}/reward-record/download/${role}`,
-      headers,
+      tokenToHeaders(token, { responseType: 'arraybuffer' }),
     );
   }
 
   async findPendingByAdmin(token: string | undefined) {
-    const headers = {
-      Authorization: token ?? '',
-    };
-
     return await this.http.get(
       `${this.eventServerUrl}/reward-record/pending`,
-      headers,
+      tokenToHeaders(token),
     );
   }
 
   async downloadPendingByAdmin(token: string | undefined) {
-    const headers = {
-      Authorization: token ?? '',
-    };
-
     return await this.http.getRaw(
       `${this.eventServerUrl}/reward-record/pending/download`,
-      headers,
+      tokenToHeaders(token, { responseType: 'arraybuffer' }),
     );
   }
 }

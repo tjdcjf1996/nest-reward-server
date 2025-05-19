@@ -1,4 +1,12 @@
-import { Controller, Post, Body, Patch, UseGuards, Req } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Patch,
+  UseGuards,
+  Req,
+  Delete,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { Public } from '../auth/public/public.decorator';
@@ -20,6 +28,11 @@ export class UserController {
   @Post('login')
   login(@Body() loginUserDto: LoginUserDto) {
     return this.userService.login(loginUserDto);
+  }
+
+  @Delete()
+  delete(@AuthToken() token: string) {
+    return this.userService.delete(token);
   }
 
   @Patch('role')

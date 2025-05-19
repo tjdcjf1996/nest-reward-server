@@ -4,6 +4,7 @@ import { UpdateEventDto } from './dto/update-event.dto';
 import { HttpClientService } from '../utils/httpClient/http-client.service';
 import { ConfigService } from '@nestjs/config';
 import { EventExecuteDto } from '../event/dto/eventExecute.dto';
+import { tokenToHeaders } from '../utils/util/token-to-headers.util';
 
 @Injectable()
 export class EventService {
@@ -17,36 +18,29 @@ export class EventService {
   }
 
   create(createEventDto: CreateEventDto, token: string | undefined) {
-    const headers = {
-      Authorization: token ?? '',
-    };
-
     return this.http.post(
       `${this.eventServerUrl}/event`,
       createEventDto,
-      headers,
+      tokenToHeaders(token),
     );
   }
 
   findAll(token: string | undefined) {
-    const headers = {
-      Authorization: token ?? '',
-    };
-    return this.http.get(`${this.eventServerUrl}/event`, headers);
+    return this.http.get(`${this.eventServerUrl}/event`, tokenToHeaders(token));
   }
 
   findAllIncDeleted(token: string | undefined) {
-    const headers = {
-      Authorization: token ?? '',
-    };
-    return this.http.get(`${this.eventServerUrl}/event/all`, headers);
+    return this.http.get(
+      `${this.eventServerUrl}/event/all`,
+      tokenToHeaders(token),
+    );
   }
 
   findOne(id: string, token: string | undefined) {
-    const headers = {
-      Authorization: token ?? '',
-    };
-    return this.http.get(`${this.eventServerUrl}/event/${id}`, headers);
+    return this.http.get(
+      `${this.eventServerUrl}/event/${id}`,
+      tokenToHeaders(token),
+    );
   }
 
   update(
@@ -54,31 +48,25 @@ export class EventService {
     updateEventDto: UpdateEventDto,
     token: string | undefined,
   ) {
-    const headers = {
-      Authorization: token ?? '',
-    };
     return this.http.patch(
       `${this.eventServerUrl}/event/${id}`,
       updateEventDto,
-      headers,
+      tokenToHeaders(token),
     );
   }
 
   delete(id: string, token: string | undefined) {
-    const headers = {
-      Authorization: token ?? '',
-    };
-    return this.http.delete(`${this.eventServerUrl}/event/${id}`, headers);
+    return this.http.delete(
+      `${this.eventServerUrl}/event/${id}`,
+      tokenToHeaders(token),
+    );
   }
 
   execute(eventExecuteDto: EventExecuteDto, token: string | undefined) {
-    const headers = {
-      Authorization: token ?? '',
-    };
     return this.http.post(
       `${this.eventServerUrl}/event-execute`,
       eventExecuteDto,
-      headers,
+      tokenToHeaders(token),
     );
   }
 }
