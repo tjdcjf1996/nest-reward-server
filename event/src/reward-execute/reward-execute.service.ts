@@ -59,7 +59,7 @@ export class RewardExecuteService {
     if (checkRecord) {
       return autoExecute
         ? { message: '이미 보상을 지급받았습니다.' }
-        : { message: '보상 지급 신청이 완료되었습니다.' };
+        : { message: '이미 보상 신청이 완료되었습니다.' };
     }
 
     // 보상 지급 방식에 따라 분리
@@ -90,6 +90,10 @@ export class RewardExecuteService {
   // pending 상태 보상지급 메서드
   async executePendingReward(rewardExecuteDto: RewardExecuteDto): Promise<any> {
     const { eventId, userEmail } = rewardExecuteDto;
+
+    if (!userEmail) {
+      return { message: '보상 지급할 이메일을 입력해주세요.' };
+    }
 
     // 이벤트에 대한 보상이 있는지 확인
     const rewards = await this.rewardService.findByEventId(eventId);
