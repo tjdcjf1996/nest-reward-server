@@ -91,6 +91,10 @@ export class RewardExecuteService {
   async executePendingReward(rewardExecuteDto: RewardExecuteDto): Promise<any> {
     const { eventId, userEmail } = rewardExecuteDto;
 
+    if (!userEmail) {
+      return { message: '보상 지급할 이메일을 입력해주세요.' };
+    }
+
     // 이벤트에 대한 보상이 있는지 확인
     const rewards = await this.rewardService.findByEventId(eventId);
     if (rewards.length === 0) {
