@@ -1,98 +1,88 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🔒 Nest Reward Auth
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+> **Nest Reward Auth**는 NestJS를 기반으로 한 통합 인증 마이크로서비스로, 사용자 인증, 관리, 역할 기반 접근 제어를 포괄적으로 지원합니다.
+> MongoDB와 Mongoose를 활용한 데이터베이스 연동부터 JWT 기반의 인증 메커니즘, 서버 간 토큰 검증을 수행하여 안전한 통신이 가능합니다.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## 📌 주요 기능
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+* 🔐 **JWT 인증** – Passport 전략 기반의 안전한 인증 시스템 구현
+* 👥 **역할 기반 접근 제어** – `Role` Enum을 통한 권한 분리 및 관리
+* 🧾 **사용자 관리 API** – 회원가입, 로그인, 탈퇴 등 핵심 유저 기능 제공
+* 🧬 **MongoDB 연동** – Mongoose ODM을 통한 유저 데이터 저장 및 관리
+* ⚙️ **환경별 설정 지원** – `.env` 및 `@nestjs/config` 기반 설정 분리
+* 🛡️ **서버 간 인증 강화** – `msa-server-token` 헤더 기반 추가 보안 처리
 
-## Project setup
+---
 
-```bash
-$ npm install
+## 📁 프로젝트 구조
+
+```
+src/
+  ├── auth/         # 인증 전략, 가드, JWT 처리 로직
+  ├── user/         # 유저 컨트롤러, 서비스, DTO
+  ├── config/       # 환경변수 및 MongoDB 설정
+  ├── main.ts       # 애플리케이션 엔트리포인트
+  └── app.module.ts # 루트 모듈 정의
 ```
 
-## Compile and run the project
+---
 
-```bash
-# development
-$ npm run start
+## ⚙️ 환경 변수 설정 예시
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+```env
+MONGO_USER=root
+MONGO_PASS=password
+MONGO_DB=auth
+MONGO_HOST=mongo
+MONGO_PORT=27017
+PORT=1234
+JWT_SECRET_KEY=jwt_secret_key_input
 ```
 
-## Run tests
+> `.env` 파일은 프로젝트 루트에 위치하며, 본인에 맞는 값을 적으면 됩니다.
+
+---
+
+## 📚 API 명세
+> 기본적으로 게이트웨이 서버에서 발급하는 서버 토큰이 있어야 통신이 가능합니다.
+
+| 이름                  | 메서드 | 경로                | 인증 필요 |
+|-----------------------|--------|---------------------|------------|
+| 회원가입              | POST   | /user/register      | ❌         |
+| 로그인                | POST   | /user/login         | ❌         |
+| 역할수정              | PATCH  | /user/role          | ✅         |
+| 관리자 권한 습득 (최초) | PATCH  | /user/role/admin    | ✅        |
+| 아이디 삭제           | DELETE | /user               | ✅         |
+
+
+---
+
+## 🧪 실행 방법
+
+### 1. 로컬 환경
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm install
+npm run build
+npm run start:prod
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### 2. Docker 실행
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+docker build -t nest-reward-auth .
+docker run -p <PORT>:<PORT> --env-file .env nest-reward-auth
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+> `.env` 경로 및 포트는 필요 시 자유롭게 커스터마이징 가능합니다.
 
-## Resources
+---
 
-Check out a few resources that may come in handy when working with NestJS:
+* 🔄 **Docker 환경에서 MongoDB 연결 문제**
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+  * 도커 컴포즈를 사용하는 경우, `MONGO_HOST`는 컨테이너 서비스명( 도커 컴포즈 기준 mongo ) 사용
+  * 단독 실행 시: `host.docker.internal` 또는 실제 IP 사용
 
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+---
