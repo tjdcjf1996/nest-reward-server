@@ -6,13 +6,12 @@ import {
   Patch,
   Param,
   Delete,
-  Req,
 } from '@nestjs/common';
 import { RewardService } from './reward.service';
 import { CreateRewardDto } from './dto/create-reward.dto';
 import { UpdateRewardDto } from './dto/update-reward.dto';
-import { Request } from 'express';
 import { AuthToken } from '../utils/decorator/auth-token.decorator';
+import { RewardExecuteDto } from './dto/rewardExecute.dto';
 
 @Controller('reward')
 export class RewardController {
@@ -56,5 +55,21 @@ export class RewardController {
   @Delete(':eventId')
   async delete(@Param('eventId') eventId: string, @AuthToken() token: string) {
     return this.rewardService.delete(eventId, token);
+  }
+
+  @Post('/execute')
+  async execute(
+    @Body() rewardExecuteDto: RewardExecuteDto,
+    @AuthToken() token: string,
+  ) {
+    return await this.rewardService.execute(rewardExecuteDto, token);
+  }
+
+  @Post('/execute/pending')
+  async executePending(
+    @Body() rewardExecuteDto: RewardExecuteDto,
+    @AuthToken() token: string,
+  ) {
+    return await this.rewardService.executePending(rewardExecuteDto, token);
   }
 }

@@ -4,6 +4,7 @@ import { UpdateRewardDto } from './dto/update-reward.dto';
 import { HttpClientService } from '../utils/httpClient/http-client.service';
 import { ConfigService } from '@nestjs/config';
 import { tokenToHeaders } from '../utils/util/token-to-headers.util';
+import { RewardExecuteDto } from './dto/rewardExecute.dto';
 
 @Injectable()
 export class RewardService {
@@ -60,6 +61,25 @@ export class RewardService {
   async delete(eventId: string, token: string | undefined) {
     return this.http.delete(
       `${this.eventServerUrl}/reward/${eventId}`,
+      tokenToHeaders(token),
+    );
+  }
+
+  async execute(rewardExecuteDto: RewardExecuteDto, token: string | undefined) {
+    return this.http.post(
+      `${this.eventServerUrl}/reward-execute`,
+      rewardExecuteDto,
+      tokenToHeaders(token),
+    );
+  }
+
+  async executePending(
+    rewardExecuteDto: RewardExecuteDto,
+    token: string | undefined,
+  ) {
+    return this.http.post(
+      `${this.eventServerUrl}/reward-execute/pending`,
+      rewardExecuteDto,
       tokenToHeaders(token),
     );
   }
