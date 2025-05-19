@@ -19,7 +19,7 @@
 ## ⚙️ 서비스 구성 및 역할
 > 서비스 이름을 클릭하면 이동합니다.
 
-### 🛡️ ![Gateway](https://github.com/tjdcjf1996/nest-reward-server/tree/main/gateway)
+### 🛡️ [Gateway](https://github.com/tjdcjf1996/nest-reward-server/tree/main/gateway)
 
 * NestJS 기반의 API 게이트웨이
 * 인증 검증 및 유저 역할 기반 라우팅 처리
@@ -29,7 +29,7 @@
 
 ---
 
-### 🔐 ![Auth Service](https://github.com/tjdcjf1996/nest-reward-server/tree/main/auth)
+### 🔐 [Auth Service](https://github.com/tjdcjf1996/nest-reward-server/tree/main/auth)
 
 * 회원가입, 로그인, 권한 변경 등 유저 관리 기능 제공
 * JWT 기반 인증 및 `@AuthToken`, `@InjectToken` 데코레이터 활용
@@ -38,7 +38,7 @@
 
 ---
 
-### 🎁 ![Event & Reward Service](https://github.com/tjdcjf1996/nest-reward-server/tree/main/event)
+### 🎁 [Event & Reward Service](https://github.com/tjdcjf1996/nest-reward-server/tree/main/event)
 
 * 이벤트 등록/조회/수정/삭제 및 실행
 * 보상 자동 지급/수동 지급 분리 처리
