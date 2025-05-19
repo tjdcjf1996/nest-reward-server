@@ -1,0 +1,42 @@
+services:
+  gateway:
+    build: ./gateway/.
+    container_name: gateway
+    ports:
+      - "${GATEWAY_PORT}:${GATEWAY_PORT}"
+    env_file:
+      - ./gateway/.env
+    depends_on:
+      - mongo
+
+  auth:
+    build: ./auth/.
+    container_name: auth
+    env_file:
+      - ./auth/.env
+    depends_on:
+      - mongo
+
+  event:
+    build: ./event/.
+    container_name: event
+    env_file:
+      - ./event/.env
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:6
+    container_name: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    env_file:
+      - .env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASS}
+    volumes:
+      - mongo_data:/data/db
+volumes:
+  mongo_data:
