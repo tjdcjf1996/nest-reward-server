@@ -15,5 +15,6 @@ export class EventExecuteDto {
   @IsNotEmpty({ message: '이벤트 아이디를 입력해주세요.' })
   eventId: string;
 
+  @IsOptional()
   eventData?: Record<string, any>;
 }
