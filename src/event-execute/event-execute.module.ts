@@ -6,6 +6,7 @@ import { EventModule } from '../event/event.module';
 import { EventExecuteController } from './event-execute.controller';
 import { EventRecordModule } from '../event-record/event-record.module';
 import { InviteStrategy } from './strategies/invite.strategy';
+import { ClickStrategy } from './strategies/click.strategy';
 
 @Module({
   imports: [DiscoveryModule, EventModule, EventRecordModule],
@@ -14,6 +15,7 @@ import { InviteStrategy } from './strategies/invite.strategy';
     EventExecuteService,
     AttendanceStrategy,
     InviteStrategy,
+    ClickStrategy,
   ],
   controllers: [EventExecuteController],
 })
