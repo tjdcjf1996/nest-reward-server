@@ -7,6 +7,7 @@ import { compare, hash } from 'bcrypt';
 import { ConflictException, UnauthorizedException } from '@nestjs/common';
 import { Role } from './types/userRole.type.js';
 import * as _ from 'lodash';
+import { randomUUID } from 'node:crypto';
 
 @Injectable()
 export class UserService {
@@ -32,7 +33,7 @@ export class UserService {
   // 로그인
   async login(email: string, password: string) {
     const user = await this.userModel
-      .findOne({ email })
+      .findOne({ email, deleteAt: null })
       .select(['email', 'password', 'role']);
     if (!user) {
       throw new UnauthorizedException('이메일을 확인해주세요.');
@@ -47,6 +48,26 @@ export class UserService {
     return {
       access_token: this.jwtService.sign(payload),
     };
+  }
+
+  // 회원탈퇴
+  async deleteUser(user: User) {
+    const userEmail = user.email;
+
+    const targetUser = await this.findByEmail(userEmail);
+    if (_.isNil(targetUser)) {
+      throw new BadRequestException('요청하신 사용자를 찾을 수 없습니다.');
+    }
+
+    const targetUserEmail = targetUser.email;
+
+    targetUser.originEmail = targetUserEmail;
+    targetUser.deleteAt = new Date();
+    targetUser.email = randomUUID();
+
+    await targetUser.save();
+
+    return { message: '회원탈퇴가 완료되었습니다.' };
   }
 
   // 역할군 업데이트
@@ -73,7 +94,7 @@ export class UserService {
 
   // 이메일로 사용자 찾기
   async findByEmail(email: string) {
-    return await this.userModel.findOne({ email });
+    return await this.userModel.findOne({ email, deleteAt: null });
   }
 
   // 관리자 수 조회
