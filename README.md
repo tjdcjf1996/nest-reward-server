@@ -126,6 +126,7 @@ docker-compose up --build
 ---
 
 ## 🧪 테스트
+![테스트 결과](https://github.com/user-attachments/assets/d9447637-883a-4900-9bbc-cbacb71f7df0)
 
 - Gateway 서비스 디렉토리 내 test 폴더를 통해 end-to-end 테스트 가능 
 - 각 서비스별로 통합 테스트 코드 포함
